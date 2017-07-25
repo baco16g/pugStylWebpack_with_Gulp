@@ -1,0 +1,40 @@
+doctype html
+block var
+	- var common = data.common;
+
+html(lang="ja")
+	head
+		meta(charset='UTF-8')
+		meta(http-equiv="X-UA-Compatible" content="IE=edge")
+		block css
+			link(rel="stylesheet" href="/assets/css/style.css")
+		block title
+
+		block meta
+			meta(name="viewport" content="width=device-width,initial-scale=1")
+			meta(name='description', content=common.meta.description)
+			meta(name='keywords', content=common.meta.keywords)
+			link(rel="shortcut icon" href=common.meta.favicon)
+
+		block ogp
+			//- meta(property="fb:app_id" content=common.ogp.appid)
+			meta(property="og:title" content=common.ogp.title)
+			meta(property="og:type" content="website")
+			meta(property="og:description" content=common.ogp.description)
+			meta(property="og:url" content=common.ogp.url)
+			meta(property="og:image" content=common.ogp.image)
+			meta(property="og:site_name" content=common.ogp.title)
+
+		block twCard
+			meta(name="twitter:card" content=common.twCard.card)
+			meta(name="twitter:site" content=common.twCard.site)
+			meta(name="twitter:title" content=common.title)
+			meta(name="twitter:description" content=common.description)
+			meta(name="twitter:image" content=common.twCard.image)
+			meta(name="twitter:url" content=common.url)
+
+	body
+		block body
+
+		block script
+			script(src="/assets/js/bundle.js")

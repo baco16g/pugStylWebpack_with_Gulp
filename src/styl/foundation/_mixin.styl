@@ -1,0 +1,22 @@
+//media query
+media-pc()
+  @media only screen and (min-width: $screen-sm + 1)
+    {block}
+
+media-tb()
+  @media only screen and (max-width: $screen-sm)
+    {block}
+
+media-sp()
+  @media only screen and (max-width: $screen-xs)
+    {block}
+
+flexBox($width, $height)
+  height: 0
+  padding-top: ($height / $width * 100%)
+
+//font family
+// typo($weight, $type)
+//   font-family: "Josefin Sans Regular", sans-serif
+//   font-weight: if($weight == bold, 600, 400)
+//   font-style: if($type == italic, italic, normal)

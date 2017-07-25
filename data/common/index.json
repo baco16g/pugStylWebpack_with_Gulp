@@ -1,0 +1,22 @@
+{
+	"meta": {
+		"title": "これは共通タイトルです",
+		"description": "これはディスクリプションです",
+		"keywords": "これはキーワードです",
+		"favicon": "dummy/path.ico"
+	},
+	"ogp": {
+		"title": "これは共通タイトルです",
+		"description": "これはディスクリプションです",
+		"url": "http://hogehoge.com",
+		"image": "dummy/path.png"
+	},
+	"twCard": {
+		"card": "summary",
+		"site": "@hogehoge",
+		"title": "これは共通タイトルです",
+		"description": "これはディスクリプションです",
+		"url": "http://hogehoge.com",
+		"image": "dummy/path.png"
+	}
+}

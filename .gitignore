@@ -1,0 +1,30 @@
+# Created by http://www.gitignore.io
+
+### Node ###
+lib-cov
+lcov.info
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+*.lock
+
+pids
+logs
+results
+build/
+public/
+docs/
+
+# dist
+bundle.css
+bundle.js
+
+config/*.json
+node_modules
+.DS_Store
+.sass-cache
+.idea
