@@ -4,6 +4,7 @@ import webpack from 'webpack';
 
 export default {
 	devtool: '',
+	target: 'node',
 	entry: [
 		path.join(__dirname, `${config.tasks.babel.src}`),
 	],
@@ -19,9 +20,9 @@ export default {
 				loader: 'babel-loader',
 			},
 			{
-				test: require.resolve("jquery"),
+				test: require.resolve('jquery'),
 				exclude: /node_modules/,
-				loader: "expose-loader?$!expose-loader?jQuery",
+				loader: 'expose-loader?$!expose-loader?jQuery',
 			},
 		],
 	},

@@ -1,2 +1,2 @@
 import $ from 'jquery';
-import { TweenMax } from "gsap";
+import { TweenMax } from 'gsap';
