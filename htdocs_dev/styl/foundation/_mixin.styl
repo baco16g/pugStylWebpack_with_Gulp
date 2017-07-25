@@ -1,19 +1,42 @@
-//media query
+// media query
 media-pc()
-  @media only screen and (min-width: $screen-sm + 1)
-    {block}
+	@media only screen and (min-width: $screen-sm + 1)
+		{block}
 
 media-tb()
-  @media only screen and (max-width: $screen-sm)
-    {block}
+	@media only screen and (max-width: $screen-sm)
+		{block}
 
 media-sp()
-  @media only screen and (max-width: $screen-xs)
-    {block}
+	@media only screen and (max-width: $screen-xs)
+		{block}
 
+
+// padding-top Hack
 flexBox($width, $height)
-  height: 0
-  padding-top: ($height / $width * 100%)
+	height 0
+	padding-top ($height / $width * 100%)
+
+
+// column
+layout-pattern($parentWidth, $columnNum, $columnMargin)
+	colAreaWidth = $parentWidth + $columnMargin
+	width $parentWidth
+	overflow hidden
+	margin-right -1 * $columnMargin
+	&:after
+		content ""
+		display block
+		clear both
+
+layout-pattern-child($parentWidth, $columnNum, $columnMargin)
+	colWidth = ((($parentWidth + $columnMargin) / $columnNum) - $columnMargin)
+	float left
+	width floor(colWidth)
+	margin-left $columnMargin
+	&:first-child
+		margin-left 0
+
 
 //font family
 // typo($weight, $type)
