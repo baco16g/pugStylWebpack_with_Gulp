@@ -12,12 +12,12 @@ const production = options.env === 'production';
 
 const config = {
 	dirs: {
-		src: './src',
-		dest: './docs',
+		src: './htdocs_dev',
+		dest: './htdocs',
 	},
 	absDirs: {
-		src: '/src',
-		dest: '/docs',
+		src: '/htdocs_dev',
+		dest: '/htdocs',
 	},
 	envProduction: production,
 };
@@ -47,20 +47,19 @@ const tasks = {
 		src: `${config.dirs.src}/images/**/*.{png,jpg,gif,svg,ico}`,
 		dest: `${config.dirs.dest}/assets/images`,
 	},
-	icon: {
-		src: `${config.dirs.src}/icon/**/*.{eot,svg,ttf,woff}`,
-		dest: `${config.dirs.dest}/assets/icon`,
+	"static": {
+		src: `${config.dirs.src}/static/**/`,
+		dest: `${config.dirs.dest}/assets/static`,
 	},
 	"data": {
-		src: `${config.dirs.src}/data/**/*.pdf`,
-		dest: `${config.dirs.dest}/assets/data`,
+		src: `${config.dirs.src}/data/`,
 	},
 	watch: {
 		pug: [`${config.dirs.src}/pug/**/*.pug`],
 		styl: [`${config.dirs.src}/styl/**/*.styl`],
 		babel: [`${config.dirs.src}/js/**/*.js`],
 		images: [`${config.dirs.src}/images/**/*`],
-		icon: [`${config.dirs.src}/icon/**/*`],
+		static: [`${config.dirs.src}/static/**/*`],
 	},
 	clean: [
 		config.dirs.dest,

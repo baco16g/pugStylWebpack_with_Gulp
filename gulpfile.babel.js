@@ -20,37 +20,38 @@ const reload = browserSync.reload;
 // Pug compile
 function pug() {
 	return gulp.src(config.tasks.pug.src)
-	.pipe($.plumber({ errorHandler: $.notify.onError('<%= error.message %>') }))
-	.pipe($.data(function(file){
-		let dirname = './data/';
-		let files = fs.readdirSync(dirname);
-		let json = {};
-		files.forEach(function(filename){
-			json[filename.replace('.json', '')] = require(dirname + filename);
-		});
-		return { data: json };
-	}))
-	.pipe($.pug(config.tasks.pug.options))
-	.pipe(gulp.dest(config.tasks.pug.dest))
-	.pipe(reload({ stream: true }));
+		.pipe($.plumber({ errorHandler: $.notify.onError('<%= error.message %>') }))
+		.pipe($.data(function(file){
+			let dirname = config.tasks.data.src;
+			let files = fs.readdirSync(dirname);
+			let json = {};
+			files.forEach(function(filename){
+				json[filename.replace('.json', '')] = require(dirname + filename);
+			});
+			return { data: json };
+		}))
+		.pipe($.pug(config.tasks.pug.options))
+		.pipe($.size({ title: 'pug' }))
+		.pipe(gulp.dest(config.tasks.pug.dest))
+		.pipe(reload({ stream: true }));
 }
 
 // Styl compile
 function styl() {
 	return gulp.src(config.tasks.styl.src)
-	.pipe($.if(!config.envProduction, $.sourcemaps.init()))
-	.pipe($.plumber({ errorHandler: $.notify.onError('<%= error.message %>') }))
-	.pipe($.stylus(config.tasks.styl.options))
-	.pipe($.if(!config.envProduction, $.sourcemaps.write()))
-	.pipe($.pleeease({
-		autoprefixer: ['last 2 versions'],
-		minifier: !config.envProduction ? false : true,
-		mqpacker: true,
-	}))
-	.pipe($.size({ title: 'styl' }))
-	.pipe($.concat('style.css'))
-	.pipe(gulp.dest(config.tasks.styl.dest))
-	.pipe(reload({ stream: true }));
+		.pipe($.if(!config.envProduction, $.sourcemaps.init()))
+		.pipe($.plumber({ errorHandler: $.notify.onError('<%= error.message %>') }))
+		.pipe($.stylus(config.tasks.styl.options))
+		.pipe($.if(!config.envProduction, $.sourcemaps.write()))
+		.pipe($.pleeease({
+			autoprefixer: ['last 2 versions'],
+			minifier: !config.envProduction ? false : true,
+			mqpacker: true,
+		}))
+		.pipe($.concat('style.css'))
+		.pipe($.size({ title: 'styl' }))
+		.pipe(gulp.dest(config.tasks.styl.dest))
+		.pipe(reload({ stream: true }));
 }
 
 // ES6 compile
@@ -64,27 +65,22 @@ function babel() {
 // Image optimize
 function images() {
 	return gulp.src(config.tasks.images.src, { since: gulp.lastRun(images) })
-	.pipe($.plumber({ errorHandler: $.notify.onError('<%= error.message %>') }))
-	.pipe($.if(!config.envProduction, $.imagemin({
-		progressive: true,
-		use: [pngquant({ quality: '60-80', speed: 1 })],
-	})))
-	.pipe(gulp.dest(config.tasks.images.dest))
-	.pipe($.size({ title: 'images' }))
-	.pipe(reload({ stream: true }));
+		.pipe($.plumber({ errorHandler: $.notify.onError('<%= error.message %>') }))
+		.pipe($.if(!config.envProduction, $.imagemin({
+			progressive: true,
+			use: [pngquant({ quality: '60-80', speed: 1 })],
+		})))
+		.pipe($.size({ title: 'images' }))
+		.pipe(gulp.dest(config.tasks.images.dest))
+		.pipe(reload({ stream: true }));
 }
 
-// Icon optimize
-function icon() {
-	return gulp.src(config.tasks.icon.src, { since: gulp.lastRun(icon) })
-	.pipe($.plumber({ errorHandler: $.notify.onError('<%= error.message %>') }))
-	.pipe($.if(!config.envProduction, $.imagemin({
-		progressive: true,
-		use: [pngquant({ quality: '60-80', speed: 1 })],
-	})))
-	.pipe(gulp.dest(config.tasks.icon.dest))
-	.pipe($.size({ title: 'icon' }))
-	.pipe(reload({ stream: true }));
+function copy() {
+	return gulp.src(config.tasks.static.src)
+		.pipe($.plumber({ errorHandler: $.notify.onError('<%= error.message %>') }))
+		.pipe($.size({ title: 'static' }))
+		.pipe(gulp.dest(config.tasks.static.dest))
+		.pipe(reload({ stream: true }));
 }
 
 // Build folder delete
@@ -114,14 +110,14 @@ gulp.task('watch', (done) => {
 	gulp.watch(config.tasks.watch.styl, gulp.series(styl));
 	gulp.watch(config.tasks.watch.babel, gulp.series(babel));
 	gulp.watch(config.tasks.watch.images, gulp.series(images));
-	gulp.watch(config.tasks.watch.icon, gulp.series(icon));
+	gulp.watch(config.tasks.watch.static, gulp.series(copy));
 	done();
 });
 
 // Default Build
 gulp.task('build', gulp.series(
 	clean,
-	gulp.parallel(pug, styl, babel, images, icon),
+	gulp.parallel(pug, styl, babel, images, copy),
 	bs,
 ));
 
