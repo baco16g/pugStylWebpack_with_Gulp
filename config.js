@@ -1,4 +1,5 @@
 import minimist from 'minimist';
+import path from 'path';
 
 const envSettings = {
 	string: 'env',
@@ -9,15 +10,16 @@ const envSettings = {
 
 const options = minimist(process.argv.slice(2), envSettings);
 const production = options.env === 'production';
+const destDir = production ? './_release' : './_build';
 
 const config = {
 	dirs: {
-		src: './htdocs_dev',
-		dest: './htdocs',
+		src: './_develop',
+		dest: destDir,
 	},
-	absDirs: {
-		src: '/htdocs_dev',
-		dest: '/htdocs',
+	bsDirs: {
+		src: '/_develop',
+		dest: destDir,
 	},
 	envProduction: production,
 };
@@ -28,7 +30,7 @@ const tasks = {
 		dest: `${config.dirs.dest}`,
 		options: {
 			pretty: true,
-			basedir: __dirname + `${config.absDirs.src}`,
+			basedir: path.join(__dirname, config.dirs.src),
 		},
 	},
 	styl: {
@@ -39,7 +41,7 @@ const tasks = {
 		},
 	},
 	babel: {
-		src: `${config.dirs.src}/js/app.js`,
+		src: `${config.dirs.src}/js`,
 		dest: `${config.dirs.dest}/assets/js`,
 		filename: 'bundle.js',
 	},
@@ -48,18 +50,17 @@ const tasks = {
 		dest: `${config.dirs.dest}/assets/images`,
 	},
 	"static": {
-		src: `${config.dirs.src}/static/**/`,
-		dest: `${config.dirs.dest}/assets/static`,
+		src: `${config.dirs.src}/static/**/*.{css,js,html,png,jpg,gif,svg,ico,eot,svg,ttf,woff,json,mp4}`,
+		dest: `${config.dirs.dest}/static`,
 	},
 	"data": {
 		src: `${config.dirs.src}/data/`,
 	},
 	watch: {
-		pug: [`${config.dirs.src}/pug/**/*.pug`],
-		styl: [`${config.dirs.src}/styl/**/*.styl`],
+		pug: [`${config.dirs.src}/pug/**/*.pug`, `${config.dirs.src}/data/**/*.json`],
+		styl: [`${config.dirs.src}/styl/**/*.styl`, `${config.dirs.src}/data/**/*.json`],
 		babel: [`${config.dirs.src}/js/**/*.js`],
 		images: [`${config.dirs.src}/images/**/*`],
-		static: [`${config.dirs.src}/static/**/*`],
 	},
 	clean: [
 		config.dirs.dest,

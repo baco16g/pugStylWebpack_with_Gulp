@@ -3,14 +3,14 @@ import path from 'path';
 import webpack from 'webpack';
 
 export default {
-	devtool: '',
+	devtool: 'inline-source-map',
 	target: 'node',
 	entry: [
-		path.join(__dirname, `${config.tasks.babel.src}`),
+		path.join(__dirname, `${config.tasks.babel.src}/app.js`),
 	],
 	output: {
 		path: path.join(__dirname, config.tasks.babel.dest),
-		filename: config.tasks.babel.filename,
+		filename: '[name].js',
 	},
 	module: {
 		loaders: [
@@ -31,6 +31,11 @@ export default {
 			$: 'jquery',
 			jQuery: 'jquery',
 			'window.jQuery': 'jquery',
+		}),
+		new webpack.optimize.UglifyJsPlugin({
+			compress: {
+				warnings: false,
+			},
 		}),
 	],
 };
