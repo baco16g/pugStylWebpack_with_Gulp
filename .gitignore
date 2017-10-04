@@ -22,7 +22,7 @@ docs/
 # dist
 bundle.css
 bundle.js
-_build
+_build/
 
 config/*.json
 node_modules
